@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arianne Collection</title>
+<meta name="description" content="Arianne Collection – browse our latest items, best sellers and categories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ffffff; --soft:#f6f6f4; --ink:#1c1c1c; --mute:#6a6a68; --line:#e7e7e4; --sale:#a3342f;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Jost',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --wrap:1160px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+section{padding:88px 0}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,4vw,2.8rem);line-height:1.1;letter-spacing:-.01em}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:36px;flex-wrap:wrap}
+.sec-head p{color:var(--mute);max-width:42ch}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--serif);font-size:1.6rem;font-weight:600;text-decoration:none;letter-spacing:.01em}
+nav{display:flex;gap:28px}
+nav a{text-decoration:none;font-size:.95rem;color:var(--mute);transition:color .2s}
+nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:64px 0 88px}
+.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.8rem,6.4vw,5.2rem);line-height:1;letter-spacing:-.02em;margin-bottom:24px}
+.hero p{color:var(--mute);font-size:1.1rem;max-width:40ch;margin-bottom:34px}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:14px 30px;font-weight:500;font-size:.95rem;border:1px solid var(--ink);transition:background .2s,color .2s}
+.btn:hover{background:#fff;color:var(--ink)}
+.stage{position:relative;aspect-ratio:4/5;background:var(--soft);overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;cursor:pointer;width:100%;text-align:left}
+.slide.on{opacity:1}
+.slide img{width:100%;height:100%;object-fit:cover}
+.slide .cap{position:absolute;left:0;bottom:0;right:0;padding:56px 24px 22px;background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff}
+.slide .cap b{font-family:var(--serif);font-size:1.5rem;font-weight:500;display:block;line-height:1.2}
+.dots{position:absolute;right:18px;top:18px;display:flex;gap:8px;z-index:2}
+.dots button{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.25)}
+.dots button.on{background:#fff;border-color:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+
+/* grid + cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:36px 24px}
+.card{text-align:left;display:block;width:100%}
+.thumb{position:relative;aspect-ratio:4/5;background:var(--soft);overflow:hidden;margin-bottom:14px}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .thumb img{transform:scale(1.04)}
+.badge{position:absolute;left:12px;top:12px;background:#fff;color:var(--sale);font-size:.8rem;font-weight:600;padding:3px 9px}
+.card h3{font-weight:500;font-size:1rem;line-height:1.35;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.price{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.98rem}
+.price s{color:var(--mute);font-size:.88rem}
+.price .now.sale{color:var(--sale);font-weight:600}
+.ph{width:100%;height:100%;display:grid;place-items:center;color:#b5b5b1;font-family:var(--serif);font-size:1.2rem}
+
+/* best seller band */
+#best{background:var(--soft)}
+
+/* categories */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.chip{border:1px solid var(--line);padding:8px 20px;font-size:.92rem;color:var(--mute);transition:all .2s}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* about */
+#about{background:var(--soft)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.about-grid p{color:var(--mute);font-size:1.05rem;margin-bottom:18px;max-width:52ch}
+.facts{display:grid;gap:0;border-top:1px solid var(--line)}
+.facts div{padding:22px 0;border-bottom:1px solid var(--line)}
+.facts b{display:block;font-family:var(--serif);font-size:1.4rem;font-weight:500}
+.facts span{color:var(--mute);font-size:.95rem}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:48px 0;color:var(--mute);font-size:.92rem}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+.foot .logo{color:var(--ink)}
+.foot nav a{font-size:.92rem}
+
+/* states */
+.skel{aspect-ratio:4/5;background:linear-gradient(90deg,var(--soft),#fff,var(--soft));background-size:200% 100%;animation:sh 1.4s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.msg{grid-column:1/-1;padding:40px 0;color:var(--mute)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;display:none;background:rgba(20,20,20,.55);padding:24px;overflow-y:auto}
+.modal.open{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{position:relative;background:#fff;max-width:980px;margin:auto;display:grid;grid-template-columns:1.05fr 1fr}
+.close{position:absolute;right:14px;top:10px;font-size:2rem;line-height:1;z-index:2;width:40px;height:40px;background:rgba(255,255,255,.85)}
+.gal .main{aspect-ratio:4/5;background:var(--soft)}
+.gal .main img{width:100%;height:100%;object-fit:cover}
+.thumbs{display:flex;gap:8px;padding:10px;overflow-x:auto}
+.thumbs button{flex:0 0 64px;height:80px;opacity:.55;border:1px solid transparent}
+.thumbs button.on{opacity:1;border-color:var(--ink)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.info{padding:48px 36px 36px;display:flex;flex-direction:column;gap:16px}
+.info h3{font-family:var(--serif);font-weight:500;font-size:2.1rem;line-height:1.1}
+.info .price{font-size:1.3rem}
+.info .code{color:var(--mute);font-size:.9rem;margin-top:-8px}
+.info .desc{color:var(--mute);white-space:pre-line}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tags span{border:1px solid var(--line);padding:3px 12px;font-size:.85rem;color:var(--mute)}
+.info .note{font-size:.9rem;color:var(--mute);border-top:1px solid var(--line);padding-top:16px;margin-top:auto}
+
+@media (max-width:860px){
+  section{padding:64px 0}
+  .hero-grid,.about-grid,.sheet{grid-template-columns:1fr}
+  .hero-grid{gap:36px}
+  nav{gap:18px}
+  .info{padding:28px 22px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:28px 14px}
+}
+@media (max-width:480px){ nav a:nth-child(n+3){display:none} }
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top">Arianne Collection</a>
+    <nav aria-label="Main">
+      <a href="#best">Best sellers</a>
+      <a href="#categories">Shop</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Pieces chosen with care.</h1>
+        <p>Arianne Collection brings you carefully selected items at honest prices. Browse the catalog and find something you will use every day.</p>
+        <a class="btn" href="#categories">Browse the collection</a>
+      </div>
+      <div class="stage" id="stage" aria-live="polite"><div class="skel" style="height:100%;aspect-ratio:auto"></div></div>
+    </div>
+  </section>
+
+  <section id="best">
+    <div class="wrap">
+      <div class="sec-head"><h2>Best sellers</h2><p>The items our customers come back for.</p></div>
+      <div class="grid" id="bestGrid"></div>
+    </div>
+  </section>
+
+  <section id="categories">
+    <div class="wrap">
+      <div class="sec-head"><h2>Shop by category</h2></div>
+      <div class="chips" id="chips" role="group" aria-label="Categories"></div>
+      <div class="grid" id="catGrid"></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div>
+        <h2 style="margin-bottom:24px">About Arianne Collection</h2>
+        <p>Arianne Collection is a small business built on simple ideas: good quality, clear prices and friendly service.</p>
+        <p>Every item in this catalog is picked by hand. If you see something you like, send us a message and we will help you place your order.</p>
+      </div>
+      <div class="facts">
+        <div><b>Hand-picked items</b><span>Each piece is chosen for quality before it is listed.</span></div>
+        <div><b>Clear pricing</b><span>Prices and discounts are shown in Philippine pesos.</span></div>
+        <div><b>Easy ordering</b><span>Message us with the item you want and we will take it from there.</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#top">Arianne Collection</a>
+    <nav aria-label="Footer"><a href="#best">Best sellers</a><a href="#categories">Shop</a><a href="#about">About</a></nav>
+    <span>&copy; <span id="yr"></span> Arianne Collection. All rights reserved.</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Item details">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+// --- CONFIGURATION ---
+const SUPABASE_URL = 'https://atbgekasqscggezxuums.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_-xQUEbTBco5KHkDa_5tAJQ_EdS0ckhD';
+// (The ImgBB key is only needed for uploading images from an admin page, so it is not used here.)
+
+const HERO = 'hero', BEST = 'best seller';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const lc = s => s.trim().toLowerCase();
+
+let items = [], activeCat = 'All', heroTimer;
+
+async function loadItems() {
+  const select = 'id,name,item_code,price_in_peso,discount_in_percentage,description,date_created,' +
+    'item_images(display_order,images(display_url)),item_categories(categories(category))';
+  const url = `${SUPABASE_URL}/rest/v1/items?select=${select}&status=eq.ACTIVE&order=date_created.desc`;
+  const res = await fetch(url, { headers: { apikey: SUPABASE_ANON_KEY } });
+  if (!res.ok) throw new Error(await res.text());
+  return (await res.json()).map(normalize);
+}
+
+function normalize(r) {
+  const images = (r.item_images || [])
+    .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+    .map(x => x.images && x.images.display_url).filter(Boolean);
+  const cats = (r.item_categories || []).map(x => x.categories && x.categories.category).filter(Boolean);
+  const desc = (r.description || '').trim();
+  const name = (r.name || '').trim();
+  const lines = desc.split('\n');
+  const price = Number(r.price_in_peso) || 0;
+  const disc = Number(r.discount_in_percentage) || 0;
+  return {
+    id: r.id,
+    // Uses the name column; falls back to the first line of the description for items without a name.
+    title: name || lines[0] || `Item #${r.id}`,
+    code: (r.item_code || '').trim(),
+    body: name ? desc : lines.slice(1).join('\n').trim(),
+    price, disc, final: price * (1 - disc / 100),
+    images, cats, catKeys: cats.map(lc)
+  };
+}
+
+const priceHTML = i => i.disc > 0
+  ? `<span class="price"><span class="now sale">${peso(i.final)}</span><s>${peso(i.price)}</s></span>`
+  : `<span class="price"><span class="now">${peso(i.price)}</span></span>`;
+
+const imgOrPh = (i, n = 0) => i.images[n]
+  ? `<img src="${esc(i.images[n])}" alt="${esc(i.title)}" loading="lazy">`
+  : `<div class="ph">Arianne</div>`;
+
+function card(i) {
+  return `<button class="card" data-id="${i.id}" aria-label="View ${esc(i.title)}">
+    <div class="thumb">${imgOrPh(i)}${i.disc > 0 ? `<span class="badge">-${+i.disc}%</span>` : ''}</div>
+    <h3>${esc(i.title)}</h3>${priceHTML(i)}</button>`;
+}
+
+/* ---------- hero ---------- */
+function renderHero() {
+  const list = items.filter(i => i.catKeys.includes(HERO));
+  const stage = $('#stage');
+  clearInterval(heroTimer);
+  if (!list.length) { stage.innerHTML = `<div class="ph">Arianne Collection</div>`; return; }
+  stage.innerHTML = list.map((i, n) => `
+    <button class="slide${n ? '' : ' on'}" data-id="${i.id}" aria-label="View ${esc(i.title)}">
+      ${imgOrPh(i)}<div class="cap"><b>${esc(i.title)}</b>${priceHTML(i).replace('sale">', 'sale" style="color:#fff">')}</div>
+    </button>`).join('') +
+    (list.length > 1 ? `<div class="dots">${list.map((_, n) => `<button class="${n ? '' : 'on'}" data-n="${n}" aria-label="Show slide ${n + 1}"></button>`).join('')}</div>` : '');
+  if (list.length < 2) return;
+  let cur = 0;
+  const go = n => {
+    cur = n;
+    stage.querySelectorAll('.slide').forEach((s, k) => s.classList.toggle('on', k === n));
+    stage.querySelectorAll('.dots button').forEach((d, k) => d.classList.toggle('on', k === n));
+  };
+  stage.querySelectorAll('.dots button').forEach(d => d.onclick = e => { e.stopPropagation(); go(+d.dataset.n); });
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+    heroTimer = setInterval(() => go((cur + 1) % list.length), 5000);
+}
+
+/* ---------- best sellers ---------- */
+function renderBest() {
+  const list = items.filter(i => i.catKeys.includes(BEST));
+  if (!list.length) { $('#best').hidden = true; return; }
+  $('#bestGrid').innerHTML = list.map(card).join('');
+}
+
+/* ---------- categories ---------- */
+function renderCategories() {
+  const others = [...new Set(items.flatMap(i => i.cats).filter(c => ![HERO, BEST].includes(lc(c))))].sort();
+  $('#chips').innerHTML = ['All', ...others].map(c =>
+    `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === activeCat}">${esc(c)}</button>`).join('');
+  const list = activeCat === 'All' ? items : items.filter(i => i.cats.includes(activeCat));
+  $('#catGrid').innerHTML = list.length ? list.map(card).join('') : `<p class="msg">No items in this category yet.</p>`;
+}
+
+/* ---------- item view ---------- */
+function openItem(id) {
+  const i = items.find(x => x.id == id);
+  if (!i) return;
+  const shown = i.cats.filter(c => ![HERO].includes(lc(c)));
+  $('#sheet').innerHTML = `
+    <button class="close" aria-label="Close">&times;</button>
+    <div class="gal">
+      <div class="main">${imgOrPh(i)}</div>
+      ${i.images.length > 1 ? `<div class="thumbs">${i.images.map((u, n) =>
+        `<button class="${n ? '' : 'on'}" data-n="${n}" aria-label="Photo ${n + 1}"><img src="${esc(u)}" alt=""></button>`).join('')}</div>` : ''}
+    </div>
+    <div class="info">
+      ${shown.length ? `<div class="tags">${shown.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : ''}
+      <h3>${esc(i.title)}</h3>
+      ${i.code ? `<p class="code">Item code: ${esc(i.code)}</p>` : ''}
+      ${priceHTML(i)}
+      ${i.disc > 0 ? `<div class="tags"><span style="color:var(--sale);border-color:var(--sale)">Save ${+i.disc}%</span></div>` : ''}
+      ${i.body ? `<p class="desc">${esc(i.body)}</p>` : ''}
+      <p class="note">Interested in this item? Send us a message with the item ${i.code ? 'code' : 'name'} and we will help you order.</p>
+    </div>`;
+  const main = $('#sheet .main');
+  $('#sheet').querySelectorAll('.thumbs button').forEach(b => b.onclick = () => {
+    $('#sheet').querySelectorAll('.thumbs button').forEach(x => x.classList.toggle('on', x === b));
+    main.innerHTML = `<img src="${esc(i.images[b.dataset.n])}" alt="${esc(i.title)}">`;
+  });
+  $('#sheet .close').onclick = closeItem;
+  $('#modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('#sheet .close').focus();
+}
+function closeItem() { $('#modal').classList.remove('open'); document.body.style.overflow = ''; }
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (chip) { activeCat = chip.dataset.cat; renderCategories(); return; }
+  const el = e.target.closest('.card, .slide');
+  if (el) openItem(el.dataset.id);
+});
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeItem(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeItem(); });
+$('#yr').textContent = new Date().getFullYear();
+
+/* ---------- start ---------- */
+(async function init() {
+  $('#bestGrid').innerHTML = $('#catGrid').innerHTML = Array(4).fill('<div class="skel"></div>').join('');
+  try {
+    items = await loadItems();
+    renderHero(); renderBest(); renderCategories();
+  } catch (err) {
+    console.error(err);
+    const m = `<p class="msg">We could not load the catalog right now. Please refresh the page or try again later.</p>`;
+    $('#bestGrid').innerHTML = $('#catGrid').innerHTML = m;
+    $('#stage').innerHTML = '<div class="ph">Arianne Collection</div>';
+  }
+})();
+</script>
+</body>
+</html>
